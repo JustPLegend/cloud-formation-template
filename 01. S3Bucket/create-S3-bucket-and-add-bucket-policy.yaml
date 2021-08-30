@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Create S3 bucket and add Bucket policy"
+
+Resources:
+    S3Bucket:                       #logical id/name
+        Type: AWS::S3::Bucket       #type of resource
+        Properties:
+            BucketName: cf-learning-beginner
+
+    SimpleBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref 'S3Bucket'
+        PolicyDocument:
+          Statement:
+            - Action:
+              - 's3:GetObject'          #allowed action
+              Effect: Allow
+              Resource:
+                'Fn::Join':
+                  - ''
+                  - - 'arn:aws:s3:::'
+                    - Ref: S3Bucket
+                    - /*
+              Principal: '*'
+
+Outputs:
+  BucketName:
+    Value: !Ref 'S3Bucket'      #reference on logical name, output - name of bucket
