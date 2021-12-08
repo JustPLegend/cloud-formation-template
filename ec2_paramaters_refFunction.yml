@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Create EC2, parameters and !Ref function (get pyhsical id of instance) "
+
+Parameters: 
+  InstanceTypeParameter:          #logical id/name
+    Description: "Select instance type"
+    Type: String                 #string type user will typing in box
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.nano
+      - t2.large
+    Description: "Enter from micro to large instance type"
+
+
+  AMIId:
+    Description: "Enter AMI ID of instance"
+    Type: String
+  
+  #Create an EC2 Key for your instance before run template
+  KeyNameEC2: 
+    Type: AWS::EC2::KeyPair::KeyName          #Type of parameter for KeyName
+    Description: "Key for EC2 instance "
+    
+Resources:
+  Instance:
+    Type: AWS::EC2::Instance 
+    Properties: 
+      InstanceType: !Ref InstanceTypeParameter 
+      KeyName: !Ref KeyNameEC2
+      ImageId: !Ref AMIId
